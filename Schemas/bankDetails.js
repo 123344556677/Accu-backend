@@ -1,28 +1,34 @@
 import mongoose from 'mongoose'
 
-const reg = new mongoose.Schema({
-    name: {
+const bankDetail= new mongoose.Schema({
+    title: {
         type: String,
         required: true
     },
-    
-    email: {
+    bank: {
         type: String,
         required: true
     },
-    hashPassword: {
+    accountNumber: {
         type: String,
         required: true
     },
-    role: {
+    iban: {
         type: String,
         required: true
     },
-    phoneNumber: {
+
+    bic: {
+        type: String,
+        required: true
+    },
+
+    address: {
         type: String,
         required: true
     }
+
 })
 
-const registeringUser = mongoose.model('user', reg)
-export default registeringUser;
+const addingBankDetails = mongoose.model('bankDetails', bankDetail)
+export default addingBankDetails;
