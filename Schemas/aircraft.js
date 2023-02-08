@@ -1,35 +1,33 @@
 import mongoose from 'mongoose'
 
-const crew = new mongoose.Schema({
-    firstName: {
+const aircraft = new mongoose.Schema({
+    aircraftOwner:{
         type: String,
         required: true
     },
-    lastName: {
+    aircraftOperator: {
         type: String,
         required: true
     },
-    email: {
+    registrationNumber: {
         type: String,
         required: true
     },
-    bank: {
+    type: {
         type: String,
         required: true
     },
-
-    phoneNumber: {
+    aircraftPic: {
         type: String,
         required: true
     },
-
-    role:{
+    role: {
         type: String,
         required: true
     }
 
 })
 
+const registeringAircraft = mongoose.model('aircraft', aircraft)
 
-const registeringCrew = mongoose.model('crew', crew)
-export default registeringCrew;
+export default registeringAircraft;
