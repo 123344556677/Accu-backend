@@ -40,3 +40,21 @@ export const getAllCrews = async (req, res) => {
         res.json({ message: "Server Error" });
     }
 }
+export const deleteCrew = async (req, res) => {
+    try {
+        console.log(req.body, "=========>id")
+        const id = req.body.e;
+        registeringCrew.findByIdAndRemove((id), (err, data) => {
+            if (data) {
+                console.log(data)
+                res.json({ message: "crew deleted" })
+            }
+            else {
+                res.json({ message: "crew does not exist" })
+            }
+        })
+    }
+    catch (err) {
+        res.json({ message: "Server Error" });
+    }
+}

@@ -41,3 +41,21 @@ export const getAllClients = async (req, res) => {
         res.json({ message: "Server Error" });
     }
 }
+export const deleteClient = async (req, res) => {
+    try {
+        console.log(req.body,"=========>id")
+        const id = req.body.e;
+        registeringClient.findByIdAndRemove( (id) , (err, data) => {
+                if (data) {
+                    console.log(data)
+                    res.json({ message: "client deleted" })
+                }
+                else {
+                    res.json({ message: "client does not exist" })
+                }
+            })
+    }
+    catch (err) {
+        res.json({ message: "Server Error" });
+    }
+}

@@ -38,3 +38,21 @@ export const getAllAircrafts = async (req, res) => {
         res.json({ message: "Server Error" });
     }
 }
+export const deleteAircraft = async (req, res) => {
+    try {
+        console.log(req.body, "=========>id")
+        const id = req.body.e;
+        registeringAircraft.findByIdAndRemove((id), (err, data) => {
+            if (data) {
+                console.log(data)
+                res.json({ message: "aircraft deleted" })
+            }
+            else {
+                res.json({ message: "aircraft does not exist" })
+            }
+        })
+    }
+    catch (err) {
+        res.json({ message: "Server Error" });
+    }
+}
