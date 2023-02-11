@@ -1,6 +1,10 @@
 import mongoose from 'mongoose'
 
 const trip = new mongoose.Schema({
+    clientId: {
+        type: String,
+
+    },
     tripName: {
         type: String,
         
@@ -58,7 +62,31 @@ const trip = new mongoose.Schema({
     role: {
         type: String,
         required: true
-    }
+    },
+    status: {
+        type: String,
+        required: true
+    },
+    crewMembers:[
+        {
+            crewName:{
+                type: String,
+            },
+            dailyRateCrew: {
+                type: String,
+            },
+           dailyRateClient: {
+                type: String,
+            },
+            perDiemsCrew: {
+                type: String,
+            },
+            perDiemsClient: {
+                type: String,
+            },
+
+        }
+    ]
 
 })
 

@@ -8,15 +8,16 @@ export const createTrip = async (req, res) => {
         console.log(req.body);
         const { tripName, client, fee,
             percentage, description, destinationTo, destinationFrom,
-            startDate, endDate, aircraftType, selectAircraft, hotelType, airlineTravel } = req.body;
+            startDate, endDate, aircraftType,
+             selectAircraft, hotelType, airlineTravel, clientId} = req.body;
         
 
 
         const trip = new registeringTrip({
             tripName, client, fee,
             percentage, description, destinationTo, destinationFrom,
-            startDate, endDate, aircraftType, selectAircraft, hotelType, airlineTravel ,
-            role: "trip"
+            startDate, endDate, aircraftType, selectAircraft, hotelType, airlineTravel ,clientId,
+            role: "trip",status:"pending"
         });
        trip.save();
 
@@ -57,3 +58,84 @@ export const deleteTrip = async (req, res) => {
         res.json({ message: "Server Error" });
     }
 }
+
+export const TripsByClientId = async (req, res) => {
+    try {
+        console.log(req.body)
+        const clientId = req.body.clientId;
+
+
+        registeringTrip.find({ clientId: clientId }, (err, data) => {
+            if (data) {
+                console.log(data)
+                res.json({ message: "User Exist", data: data })
+            }
+            else {
+                res.json({ message: "User not  Exist", data: data })
+            }
+        })
+    }
+    catch (err) {
+        res.json({ message: "Server Error" });
+    }
+
+};
+
+export const addCrewToTrips = async (req, res) => {
+    try {
+        console.log(req.body)
+        const tripId = req.body.tripId;
+        const val={
+            crewName: req.body.crewName,
+            dailyRateCrew: req.body.dailyRateCrew,
+            dailyRateClient: req.body.dailyRateClient,
+            perDiemsCrew: req.body.perDiemsCrew,
+            perDiemsClient: req.body.perDiemsClient,
+
+        }
+
+        registeringTrip.findOneAndUpdate({ _id: tripId }, 
+            {$push:{crewMembers:val} },{new:true},(err, data) => {
+            if (data) {
+                console.log(data);
+                        res.json({ message: "crew Added", data: data })
+                    
+            
+              
+            }
+            else {
+                res.json({ message: "trip not found", data: data })
+            }
+        })
+    }
+    catch (err) {
+        res.json({ message: "Server Error" });
+    }
+
+};
+export const updateTripStatus= async (req, res) => {
+    try {
+        console.log(req.body)
+        const tripId = req.body.tripId;
+        
+
+        registeringTrip.findOneAndUpdate({ _id: tripId },
+            { $set: { status: req.body.status } }, { new: true }, (err, data) => {
+                if (data) {
+                    console.log(data);
+                    res.json({ message: "Trip status updated", data: data })
+
+
+
+                }
+                else {
+                    res.json({ message: "Trip status not updated", data: data })
+                }
+            })
+    }
+    catch (err) {
+        res.json({ message: "Server Error" });
+    }
+
+};
+
