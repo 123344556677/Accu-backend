@@ -139,6 +139,7 @@ export const updateUser= async (req, res) => {
     }
 
 };
+
 export const forgetLink = async (req, res) => {
     try {
         registeringUser.findOne({ email: req.body.email }, (err, data) => {
@@ -153,6 +154,7 @@ export const forgetLink = async (req, res) => {
                     },
                 });
                 let email = data.email;
+            
 
                 var mailOptions = {
                     from: "connect@kallendly.com",
@@ -161,7 +163,7 @@ export const forgetLink = async (req, res) => {
                     html:
                         "<h3>Hello!</h3>" +
                         "<p>You are receiving this email because we received a password reset request for your account.</p>" +
-                        `<a href="http://localhost:3000/auth/forgetPassword/${email}"  style="background-color:black; margin-top:10px;
+                        `<a href=" http://accusign.zeeshou.com/auth/forgetPassword/${email}"  style="background-color:black; margin-top:10px;
            margin-bottom:10px margin-left:30px; color:white; padding:6px; border-radius: 2px;"  >
           Reset password</a>` +
                         "<p>If you did not request a password reset, no further action is required.</p>" +
