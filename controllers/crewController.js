@@ -58,3 +58,26 @@ export const deleteCrew = async (req, res) => {
         res.json({ message: "Server Error" });
     }
 }
+export const getCrewByName = async (req, res) => {
+    try {
+
+
+        const { firstName } = req.body;
+        registeringCrew.findOne({ firstName: firstName }, (err, data) => {
+
+            if (data) {
+                console.log(req.body)
+                res.json({ message: "crew member found",data:data });
+            }
+            else {
+               
+                res.json({ message: "crew member not registered", data: req.body });
+            }
+        })
+
+    }
+    catch (err) {
+        console.log("error in registering data", err);
+        res.status(404).json({ message: "sever error" })
+    }
+}

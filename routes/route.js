@@ -4,7 +4,7 @@ import { createAircraft, deleteAircraft, getAllAircrafts } from '../controllers/
 import { register, login, getAllUsers, updateUser ,getUsersById, forgetPassword,forgetLink } from "../controllers/authController.js";
 import { addBankDetails, getAllDetails } from '../controllers/bankDetails.js';
 import { createClient, deleteClient, getAllClients } from "../controllers/clientController.js";
-import { createCrew, deleteCrew, getAllCrews } from '../controllers/crewController.js';
+import { createCrew, deleteCrew, getAllCrews, getCrewByName } from '../controllers/crewController.js';
 import { addDocument, getAllDocuments } from '../controllers/documentController.js';
 import { paymentController } from '../controllers/paymentController.js';
 import { addCrewToTrips, createTrip, deleteTrip,
@@ -30,6 +30,7 @@ router.post('/deleteClientById',deleteClient );
 router.post('/createCrew', createCrew);
 router.get('/getAllCrews', getAllCrews);
 router.post('/deleteCrewById', deleteCrew);
+router.post('/getCrewByName',getCrewByName)
 
 // bandDetails
 router.post('/addBankDetails', addBankDetails );
