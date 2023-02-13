@@ -11,7 +11,8 @@ export const register = async (req, res) => {
     try {
         
         
-        const { firstName,email,password,phoneNumber,role } = req.body;
+        const { firstName,email,password,phoneNumber } = req.body.values;
+        const {role}=req.body;
         registeringUser.findOne({ email: email }, (err, data) => {
 
             if(data){
