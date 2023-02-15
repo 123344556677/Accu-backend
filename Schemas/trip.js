@@ -69,7 +69,7 @@ const trip = new mongoose.Schema({
     },
     crewMembers:[
         {
-            crewName:{
+            crewId:{
                 type: String,
             },
             dailyRateCrew: {
@@ -84,6 +84,9 @@ const trip = new mongoose.Schema({
             perDiemsClient: {
                 type: String,
             },
+            crewType:{
+                type: String,
+            }
 
         }
     ]

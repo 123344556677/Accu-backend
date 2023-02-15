@@ -1,14 +1,14 @@
 
 import express from 'express'
 import { createAircraft, deleteAircraft, getAllAircrafts } from '../controllers/aircraftController.js';
-import { register, login, getAllUsers, updateUser ,getUsersById, forgetPassword,forgetLink } from "../controllers/authController.js";
+import { register, login, getAllUsers, updateUser ,getUsersById, forgetPassword,forgetLink, getCrewByKey } from "../controllers/authController.js";
 import { addBankDetails, getAllDetails } from '../controllers/bankDetails.js';
 import { createClient, deleteClient, getAllClients } from "../controllers/clientController.js";
 import { createCrew, deleteCrew, getAllCrews, getCrewByName } from '../controllers/crewController.js';
 import { addDocument, getAllDocuments } from '../controllers/documentController.js';
 import { paymentController } from '../controllers/paymentController.js';
-import { addCrewToTrips, createTrip, deleteTrip,
-     getAllTrips, TripsByClientId,updateTripStatus } from '../controllers/tripController.js';
+import { addCrewToTrips,  addTripWithCrew, createTrip, deleteTrip,
+     getAllTrips, TripsByClientId,TripsByCrewId,updateTripStatus } from '../controllers/tripController.js';
 
 
 const router = express.Router();
@@ -20,6 +20,7 @@ router.post('/userById', getUsersById)
 router.post('/forgetPassword', forgetPassword);
 router.put('/updateUser', updateUser);
 router.post('/forgetLink', forgetLink);
+router.get('/crewByKey',getCrewByKey)
 
 //client
 router.post('/createClient', createClient );
@@ -48,6 +49,9 @@ router.post('/deleteTripById', deleteTrip);
 router.post('/getAllTripsByClientId', TripsByClientId);
 router.post('/addCrewToTrips', addCrewToTrips);
 router.put('/updateTripStatus', updateTripStatus);
+router.post('/addTripwithCrew', addTripWithCrew);
+router.post('/getAllTripsByCrewId', TripsByCrewId);
+
 
 //document
 router.post('/addDocument', addDocument);

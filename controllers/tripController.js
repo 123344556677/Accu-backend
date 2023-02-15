@@ -80,17 +80,40 @@ export const TripsByClientId = async (req, res) => {
     }
 
 };
+export const TripsByCrewId = async (req, res) => {
+    try {
+        console.log(req.body,"----------->crew Id")
+        const crewId = req.body.crewId;
+
+
+        registeringTrip.find({"crewMembers.crewId": crewId }, (err, data) => {
+            if (data) {
+                console.log(data)
+                res.json({ message: "User Exist", data: data })
+            }
+            else {
+                console.log("user not exist")
+                res.json({ message: "User not  Exist", data: data })
+            }
+        })
+    }
+    catch (err) {
+        res.json({ message: "Server Error",err:err });
+    }
+
+};
 
 export const addCrewToTrips = async (req, res) => {
     try {
         console.log(req.body)
         const tripId = req.body.tripId;
         const val={
-            crewName: req.body.crewName,
+            crewId: req.body.crewId,
             dailyRateCrew: req.body.dailyRateCrew,
             dailyRateClient: req.body.dailyRateClient,
             perDiemsCrew: req.body.perDiemsCrew,
             perDiemsClient: req.body.perDiemsClient,
+            crewType: req.body.crewType
 
         }
 
@@ -135,6 +158,51 @@ export const updateTripStatus= async (req, res) => {
     }
     catch (err) {
         res.json({ message: "Server Error" });
+    }
+
+};
+
+export const addTripWithCrew= async (req, res) => {
+    try {
+
+        console.log(req.body);
+        const { tripName, client, fee,
+            percentage, description, destinationTo, destinationFrom,
+            startDate, endDate, aircraftType,
+            selectAircraft, hotelType, airlineTravel, clientId,crewId,
+             dailyRateCrew,
+             dailyRateClient,
+             perDiemsCrew,
+            perDiemsClient,crewType } = req.body;
+
+
+
+        const trip = new registeringTrip({
+            tripName, client, fee,
+            percentage, description, destinationTo, destinationFrom,
+            startDate, endDate, aircraftType, selectAircraft, hotelType, airlineTravel, clientId,
+            role: "trip", status: "pending",crewMembers:[
+                {
+                    crewId: crewId,
+                    dailyRateCrew: dailyRateCrew,
+                    dailyRateClient: dailyRateClient,
+                    perDiemsCrew: perDiemsCrew,
+                    perDiemsClient: perDiemsClient,
+                    crewType:crewType
+                }
+
+            ] 
+        });
+        trip.save();
+
+        res.json({ message: "Trip Details added", data: req.body });
+
+
+
+    }
+    catch (err) {
+        console.log("error in adding trip details", err);
+        res.json({ message: "server error" })
     }
 
 };

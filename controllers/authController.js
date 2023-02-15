@@ -191,3 +191,24 @@ export const forgetLink = async (req, res) => {
     }
 
 };
+export const getCrewByKey = async (req, res) => {
+    try {
+       
+
+
+        registeringUser.find({ role:"crew"  }, (err, data) => {
+            if (data) {
+                console.log(data)
+                res.json({ message: "Auth Crew exist", data: data })
+            }
+            else {
+                res.json({ message: "Auth Crew not exist", data: data })
+            }
+        })
+    }
+    catch (err) {
+        res.json({ message: "Server Error" });
+    }
+
+};
+
