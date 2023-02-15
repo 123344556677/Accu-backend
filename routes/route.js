@@ -6,7 +6,7 @@ import { addBankDetails, getAllDetails } from '../controllers/bankDetails.js';
 import { createClient, deleteClient, getAllClients } from "../controllers/clientController.js";
 import { createCrew, deleteCrew, getAllCrews, getCrewByName } from '../controllers/crewController.js';
 import { addDocument, getAllDocuments } from '../controllers/documentController.js';
-import { paymentController } from '../controllers/paymentController.js';
+import { getAllPayments, paymentByClientId, paymentController } from '../controllers/paymentController.js';
 import { addCrewToTrips,  addTripWithCrew, createTrip, deleteTrip,
      getAllTrips, TripsByClientId,TripsByCrewId,updateTripStatus } from '../controllers/tripController.js';
 
@@ -59,4 +59,7 @@ router.get('/getAllDocuments', getAllDocuments);
 
 //strip
 router.post('/stripPayment', paymentController);
+router.post('/getPaymentByClientId', paymentByClientId);
+router.get('/getAllPayments', getAllPayments);
+
 export default router;

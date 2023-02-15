@@ -1,28 +1,45 @@
 import registeringCrew from "../Schemas/crew.js";
-
+import nodemailer from 'nodemailer';
 export const createCrew= async (req, res) => {
     try {
 
 
         const { firstName, lastName, phoneNumber, email, bank } = req.body;
-        registeringCrew.findOne({ email: email }, (err, data) => {
+        var transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: "hananabdul659@gmail.com",
+                pass: "nhpiqnxdeiwmaxdw",
+            },
+        });
+       
 
-            if (data) {
-                console.log(req.body)
-                res.json({ message: "Email already exist" });
-            }
-            else {
-                console.log(req.body);
-                const crew = new registeringCrew({ firstName,
-                     lastName, phoneNumber,
-                      email,
-                     bank,
-                     role:"crew" });
-                crew.save();
 
-                res.json({ message: "crew member created", data: req.body });
+        var mailOptions = {
+            from: "connect@kallendly.com",
+            to: email,
+            subject: "Register",
+            html:
+                "<h3>Hello!</h3>" +
+                "<p>You are receiving this email to signup for crew account.</p>" +
+                `<a href=" http://accusign.zeeshou.com/register"  style="background-color:black; margin-top:10px;
+           margin-bottom:10px margin-left:30px; color:white; padding:6px; border-radius: 2px;"  >
+          Register</a>` +
+                "<p>If you don't, no further action is required.</p>" +
+                "<p>Regards,</p>" +
+                "<p>Accu Sign</p>",
+            text: "That was easy!",
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+                res.json({ message: "Email not Sent" });
+            } else {
+                console.log("Email sent: " + info.response);
+                res.json({ message: "Email Sent" });
             }
-        })
+        });
 
     }
     catch (err) {

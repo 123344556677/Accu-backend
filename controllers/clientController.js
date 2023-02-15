@@ -1,30 +1,47 @@
 import registeringClient from '../Schemas/client.js';
-
+import nodemailer from 'nodemailer';
 
 export const createClient = async (req, res) => {
+    console.log(req.body);
     try {
 
-
+         
         const { firstName, lastName, phoneNumber, email, registrationNumber } = req.body;
-        registeringClient.findOne({ email: email }, (err, data) => {
+        var transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: "hananabdul659@gmail.com",
+                pass: "nhpiqnxdeiwmaxdw",
+            },
+        });
 
-            if (data) {
-                console.log(req.body)
-                res.json({ message: "Email already exist" });
+
+
+        var mailOptions = {
+            from: "connect@kallendly.com",
+            to: email,
+            subject: "Register",
+            html:
+                "<h3>Hello!</h3>" +
+                "<p>You are receiving this email to signup for client account.</p>" +
+                `<a href=" http://accusign.zeeshou.com/register"  style="background-color:black; margin-top:10px;
+           margin-bottom:10px margin-left:30px; color:white; padding:6px; border-radius: 2px;"  >
+          Register</a>` +
+                "<p>If you don't, no further action is required.</p>" +
+                "<p>Regards,</p>" +
+                "<p>Accu Sign</p>",
+            text: "That was easy!",
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+                res.json({ message: "Email not Sent" });
+            } else {
+                console.log("Email sent: " + info.response);
+                res.json({ message: "Email Sent" });
             }
-            else {
-                console.log(req.body);
-                const client = new registeringClient({ firstName, 
-                    lastName,
-                     phoneNumber, 
-                     email, 
-                     registrationNumber ,
-                     role:"client"});
-                client.save();
-               
-                res.json({ message: "client created", data: req.body });
-            }
-        })
+        });
 
     }
     catch (err) {
