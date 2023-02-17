@@ -30,6 +30,10 @@ const trip = new mongoose.Schema({
         type: String,
 
     },
+    date: {
+        type: Date,
+        
+    },
     destinationFrom: {
         type: String,
 
@@ -67,6 +71,16 @@ const trip = new mongoose.Schema({
         type: String,
         required: true
     },
+    crewStatus: {
+        type: String,
+        required: true
+    },
+    payment: {
+        type: String,
+        required: true
+    },
+    
+
     crewMembers:[
         {
             crewId:{

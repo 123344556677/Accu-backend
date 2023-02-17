@@ -11,6 +11,10 @@ const stripe = new mongoose.Schema({
             type: String,
 
         },
+        tripId: {
+            type: String,
+
+        },
         client: {
             type: String,
 

@@ -17,7 +17,7 @@ export const createTrip = async (req, res) => {
             tripName, client, fee,
             percentage, description, destinationTo, destinationFrom,
             startDate, endDate, aircraftType, selectAircraft, hotelType, airlineTravel ,clientId,
-            role: "trip",status:"pending"
+            role: "trip",status:"pending",crewStatus:"pending",payment:"pending",date:Date.now()
         });
        trip.save();
 
@@ -141,7 +141,22 @@ export const updateTripStatus= async (req, res) => {
         console.log(req.body)
         const tripId = req.body.tripId;
         
+if(req.body.crewStatus){
+    registeringTrip.findOneAndUpdate({ _id: tripId },
+        { $set: { crewStatus: req.body.crewStatus } }, { new: true }, (err, data) => {
+            if (data) {
+                console.log(data);
+                res.json({ message: "Trip status updated", data: data })
 
+
+
+            }
+            else {
+                res.json({ message: "Trip status not updated", data: data })
+            }
+        })
+}
+        if (req.body.status) {
         registeringTrip.findOneAndUpdate({ _id: tripId },
             { $set: { status: req.body.status } }, { new: true }, (err, data) => {
                 if (data) {
@@ -155,6 +170,7 @@ export const updateTripStatus= async (req, res) => {
                     res.json({ message: "Trip status not updated", data: data })
                 }
             })
+        }
     }
     catch (err) {
         res.json({ message: "Server Error" });
@@ -173,7 +189,7 @@ export const addTripWithCrew= async (req, res) => {
              dailyRateCrew,
              dailyRateClient,
              perDiemsCrew,
-            perDiemsClient,crewType } = req.body;
+            perDiemsClient,crewType} = req.body;
 
 
 
@@ -181,7 +197,7 @@ export const addTripWithCrew= async (req, res) => {
             tripName, client, fee,
             percentage, description, destinationTo, destinationFrom,
             startDate, endDate, aircraftType, selectAircraft, hotelType, airlineTravel, clientId,
-            role: "trip", status: "pending",crewMembers:[
+            role: "trip", status: "pending", crewStatus: "pending",payment:"pending",crewMembers:[
                 {
                     crewId: crewId,
                     dailyRateCrew: dailyRateCrew,

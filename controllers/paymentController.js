@@ -11,7 +11,7 @@ const stripe = new Stripe("sk_test_51MaOSqE6HtvcwmMAEFBEcSwTQIBNvQVzAXJc1cnrFoKI
 export const paymentController =async (req,res) => {
   try{
     console.log(req.body);
-      let {  paymentId,clientId,tripDetails, } = req.body
+      let {  paymentId,clientId,tripDetails,tripId } = req.body
     
       const payment = await stripe.paymentIntents.create({
           amount:1000,
@@ -22,10 +22,23 @@ export const paymentController =async (req,res) => {
       })
      console.log(payment,"==========>payment")
      if(payment.status==="succeeded"){
+
         const Payment=new registeringPayment({tripDetails,clientId,paymentId,date:Date.now(),amount:payment?.amount})
         Payment.save();
          res.json({ message: "Payment successful" });
-        //  registeringTrip.find({_id:tripDetails.})
+         registeringTrip.findOneAndUpdate({ _id:tripId },
+             { $set: { payment: "approved" } }, { new: true }, (err, data) => {
+                 if (data) {
+                     console.log(data);
+                     res.json({ message: "Payment successful", data: data })
+
+
+
+                 }
+                 else {
+                     res.json({ message: "payment status not updated", data: data })
+                 }
+             })
      }
       
       
