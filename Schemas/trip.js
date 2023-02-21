@@ -83,6 +83,9 @@ const trip = new mongoose.Schema({
 
     crewMembers:[
         {
+            crewName:{
+                type:String,
+            },
             crewId:{
                 type: String,
             },

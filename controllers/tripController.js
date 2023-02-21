@@ -1,3 +1,4 @@
+import registeringUser from "../Schemas/Auth.js";
 import registeringTrip from "../Schemas/trip.js";
 
 
@@ -107,6 +108,7 @@ export const addCrewToTrips = async (req, res) => {
     try {
         console.log(req.body)
         const tripId = req.body.tripId;
+        const crewId = req.body.crewId;
         const val={
             crewId: req.body.crewId,
             dailyRateCrew: req.body.dailyRateCrew,
@@ -116,23 +118,49 @@ export const addCrewToTrips = async (req, res) => {
             crewType: req.body.crewType
 
         }
+        const Val=val;
+        const fee=req.body.fee;
+        const percentage = req.body.percentage;
 
+        registeringUser.findOne({ _id: crewId }, (err, data) => {
+            if (data) {
+                console.log(data, "==========>crew data")
         registeringTrip.findOneAndUpdate({ _id: tripId }, 
-            {$push:{crewMembers:val} },{new:true},(err, data) => {
+            { $push: { crewMembers: {
+                crewId: req.body.crewId,
+                dailyRateCrew: req.body.dailyRateCrew,
+                dailyRateClient: req.body.dailyRateClient,
+                perDiemsCrew: req.body.perDiemsCrew,
+                perDiemsClient: req.body.perDiemsClient,
+                crewType: req.body.crewType,
+                crewName: data.firstName
+
+            } }, fee: fee, percentage: percentage },{new:true},(err, data) => {
             if (data) {
                 console.log(data);
                         res.json({ message: "crew Added", data: data })
+                console.log("found");
                     
             
               
             }
             else {
                 res.json({ message: "trip not found", data: data })
+                console.log("not found");
             }
         })
     }
+       
+
+else{
+                console.log( "==========>crew does not exist")
+}
+        })
+        
+    }
     catch (err) {
         res.json({ message: "Server Error" });
+        console.log(err);
     }
 
 };
@@ -181,7 +209,7 @@ if(req.body.crewStatus){
 export const addTripWithCrew= async (req, res) => {
     try {
 
-        console.log(req.body);
+        console.log(req.body,"========>with crew");
         const { tripName, client, fee,
             percentage, description, destinationTo, destinationFrom,
             startDate, endDate, aircraftType,
@@ -191,27 +219,40 @@ export const addTripWithCrew= async (req, res) => {
              perDiemsCrew,
             perDiemsClient,crewType} = req.body;
 
-
-
-        const trip = new registeringTrip({
-            tripName, client, fee,
-            percentage, description, destinationTo, destinationFrom,
-            startDate, endDate, aircraftType, selectAircraft, hotelType, airlineTravel, clientId,
-            role: "trip", status: "pending", crewStatus: "pending",payment:"pending",crewMembers:[
-                {
-                    crewId: crewId,
-                    dailyRateCrew: dailyRateCrew,
-                    dailyRateClient: dailyRateClient,
-                    perDiemsCrew: perDiemsCrew,
-                    perDiemsClient: perDiemsClient,
-                    crewType:crewType
+        registeringUser.findOne({ _id:crewId }, (err, data) => {
+            console.log(req.body);
+            if (data) {
+                console.log(data,"==========>crew data")
+                const trip = new registeringTrip({
+                    tripName, client, fee,
+                    percentage, description, destinationTo, destinationFrom,
+                    startDate, endDate, aircraftType, selectAircraft, hotelType, airlineTravel, clientId,
+                    role: "trip", status: "pending", crewStatus: "pending", payment: "pending", crewMembers: [
+                        {
+                            crewId: crewId,
+                            dailyRateCrew: dailyRateCrew,
+                            dailyRateClient: dailyRateClient,
+                            perDiemsCrew: perDiemsCrew,
+                            perDiemsClient: perDiemsClient,
+                            crewType: crewType,
+                            crewName:data.firstName
                 }
 
-            ] 
-        });
-        trip.save();
+                    ]
+                });
+                trip.save();
 
-        res.json({ message: "Trip Details added", data: req.body });
+                res.json({ message: "Trip Details added", data: req.body });
+            }
+            else{
+                console.log("Crew does not exist");
+            }
+        }
+        )
+
+
+
+        
 
 
 

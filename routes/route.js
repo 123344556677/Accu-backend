@@ -1,7 +1,7 @@
 
 import express from 'express'
 import { createAircraft, deleteAircraft, getAllAircrafts } from '../controllers/aircraftController.js';
-import { register, login, getAllUsers, updateUser ,getUsersById, forgetPassword,forgetLink, getCrewByKey } from "../controllers/authController.js";
+import { register, login, getAllUsers, updateUser ,getUsersById, forgetPassword,forgetLink, getCrewByKey, getClientByKey, deleteUser } from "../controllers/authController.js";
 import { addBankDetails, getAllDetails } from '../controllers/bankDetails.js';
 import { createClient, deleteClient, getAllClients } from "../controllers/clientController.js";
 import { createCrew, deleteCrew, getAllCrews, getCrewByName } from '../controllers/crewController.js';
@@ -21,6 +21,8 @@ router.post('/forgetPassword', forgetPassword);
 router.put('/updateUser', updateUser);
 router.post('/forgetLink', forgetLink);
 router.get('/crewByKey',getCrewByKey)
+router.get('/clientByKey', getClientByKey)
+router.post('/deleteUserById', deleteUser);
 
 //client
 router.post('/createClient', createClient );

@@ -30,13 +30,13 @@ export const paymentController =async (req,res) => {
              { $set: { payment: "approved" } }, { new: true }, (err, data) => {
                  if (data) {
                      console.log(data);
-                     res.json({ message: "Payment successful", data: data })
+                     
 
 
 
                  }
                  else {
-                     res.json({ message: "payment status not updated", data: data })
+                   console.log("payment not updated")
                  }
              })
      }

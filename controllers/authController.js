@@ -211,4 +211,43 @@ export const getCrewByKey = async (req, res) => {
     }
 
 };
+export const getClientByKey = async (req, res) => {
+    try {
+
+
+
+        registeringUser.find({ role: "client" }, (err, data) => {
+            if (data) {
+                console.log(data)
+                res.json({ message: "Auth Client exist", data: data })
+            }
+            else {
+                res.json({ message: "Auth Client not exist", data: data })
+            }
+        })
+    }
+    catch (err) {
+        res.json({ message: "Server Error" });
+    }
+
+};
+
+export const deleteUser = async (req, res) => {
+    try {
+        console.log(req.body, "=========>id")
+        const id = req.body.e;
+        registeringUser.findByIdAndRemove((id), (err, data) => {
+            if (data) {
+                console.log(data)
+                res.json({ message: "user deleted" })
+            }
+            else {
+                res.json({ message: "user does not exist" })
+            }
+        })
+    }
+    catch (err) {
+        res.json({ message: "Server Error" });
+    }
+}
 
