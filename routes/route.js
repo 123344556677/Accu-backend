@@ -7,8 +7,8 @@ import { createClient, deleteClient, getAllClients } from "../controllers/client
 import { createCrew, deleteCrew, getAllCrews, getCrewByName } from '../controllers/crewController.js';
 import { addDocument, getAllDocuments } from '../controllers/documentController.js';
 import { getAllPayments, paymentByClientId, paymentController } from '../controllers/paymentController.js';
-import { addCrewToTrips,  addTripWithCrew, createTrip, deleteTrip,
-     getAllTrips, TripsByClientId,TripsByCrewId,updateTripStatus } from '../controllers/tripController.js';
+import { addCrewToTrips,  addingTripExpenses,  addTripWithCrew, createTrip, deleteTrip,
+     getAllTrips, getCrewExpense, TripsByClientId,TripsByCrewId,updateTripDocumentStatus,updateTripStatus } from '../controllers/tripController.js';
 
 
 const router = express.Router();
@@ -53,7 +53,9 @@ router.post('/addCrewToTrips', addCrewToTrips);
 router.put('/updateTripStatus', updateTripStatus);
 router.post('/addTripwithCrew', addTripWithCrew);
 router.post('/getAllTripsByCrewId', TripsByCrewId);
-
+router.post('/addTripExpenses', addingTripExpenses);
+router.post('/getCrewExpense', getCrewExpense);
+router.put('/updateDocumentStatus',updateTripDocumentStatus);
 
 //document
 router.post('/addDocument', addDocument);

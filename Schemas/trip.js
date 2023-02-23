@@ -79,6 +79,10 @@ const trip = new mongoose.Schema({
         type: String,
         required: true
     },
+    documentStatus:{
+        type: String,
+        required: true
+    },
     
 
     crewMembers:[
@@ -103,10 +107,38 @@ const trip = new mongoose.Schema({
             },
             crewType:{
                 type: String,
+            },
+
+        }
+    ],
+    crewExpenses: [
+        {
+            title: {
+                type: String
+            },
+            merchant: {
+                type: String
+            },
+            amount: {
+                type: String
+            },
+            expensePic: {
+                type: String
+            },
+            crewId: {
+                type: String
+            },
+            crewName: {
+                type: String
+            },
+            date:{
+                type: String
             }
 
         }
+
     ]
+    
 
 })
 

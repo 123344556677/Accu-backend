@@ -18,7 +18,7 @@ export const createTrip = async (req, res) => {
             tripName, client, fee,
             percentage, description, destinationTo, destinationFrom,
             startDate, endDate, aircraftType, selectAircraft, hotelType, airlineTravel ,clientId,
-            role: "trip",status:"pending",crewStatus:"pending",payment:"pending",date:Date.now()
+            role: "trip",status:"pending",crewStatus:"pending",payment:"pending",documentStatus:"pending",date:Date.now()
         });
        trip.save();
 
@@ -227,7 +227,7 @@ export const addTripWithCrew= async (req, res) => {
                     tripName, client, fee,
                     percentage, description, destinationTo, destinationFrom,
                     startDate, endDate, aircraftType, selectAircraft, hotelType, airlineTravel, clientId,
-                    role: "trip", status: "pending", crewStatus: "pending", payment: "pending", crewMembers: [
+                    role: "trip", status: "pending", crewStatus: "pending", payment: "pending", documentStatus: "pending", crewMembers: [
                         {
                             crewId: crewId,
                             dailyRateCrew: dailyRateCrew,
@@ -260,6 +260,120 @@ export const addTripWithCrew= async (req, res) => {
     catch (err) {
         console.log("error in adding trip details", err);
         res.json({ message: "server error" })
+    }
+
+};
+export const addingTripExpenses = async (req, res) => {
+    try {
+        console.log(req.body)
+        const tripId = req.body.tripId;
+        const {title,merchant,amount,date}=req.body.values;
+        const expensePic=req.body.expensePic;
+        const crewId=req.body.crewId
+        registeringUser.findOne({ _id: crewId }, (err, data) => {
+            console.log(req.body);
+            if (data) {
+               
+      
+            registeringTrip.findOneAndUpdate({ _id: tripId },
+                { $push: { crewExpenses: 
+                    {
+                 title:title,
+                 merchant:merchant,
+                 amount:amount,
+                 expensePic:expensePic,
+                 crewId:crewId,
+                 crewName:data.firstName,
+                 date:date
+                    }
+
+                } }, { new: true }, (err, data) => {
+                    if (data) {
+                        console.log(data,"after adding");
+                        res.json({ message: "Expense Added", data: data })
+
+
+
+                    }
+                    else {
+                        res.json({ message: "Expense not Added", data: data })
+                    }
+                })
+            }
+            else{
+                console.log("member not found")
+            }
+        })
+        
+        
+    }
+    catch (err) {
+        res.json({ message: "Server Error" });
+    }
+
+};
+
+export const getCrewExpense = async (req, res) => {
+    try {
+        let newData=[];
+        console.log(req.body,"=============newid");
+        const crewId=req.body.crewId;
+       const tripId=req.body.tripId;
+        registeringTrip.findOne({ _id: tripId }, (err, data) => {
+            if(data){
+                
+        // const datas = registeringTrip.findAll({ "crewExpenses.crewId": crewId });
+
+            for(let i=0;i<data?.crewExpenses?.length;i++){
+               
+if(data?.crewExpenses[i]?.crewId===crewId){
+    newData.push(data?.crewExpenses[i])
+    console.log(newData, "==========>crewData");
+   
+}
+            }
+                res.json({data:newData});
+                console.log(newData,"==========>newData");
+            }
+            else{
+                console.log("not found")
+            }
+        
+       
+            
+        
+        
+    
+})
+    }
+    catch (err) {
+        res.json({ message: "Server Error" });
+    }
+}
+export const updateTripDocumentStatus = async (req, res) => {
+    try {
+        console.log(req.body,"========>values")
+        const tripId = req.body.tripId;
+
+       
+            registeringTrip.findOneAndUpdate({ _id: tripId },
+                { $set: { documentStatus: req.body.documentStatus } }, { new: true }, (err, data) => {
+                    if (data) {
+                        console.log(data);
+                        res.json({ message: "Document status updated", data: data })
+
+
+
+                    }
+                    else {
+                        res.json({ message: "Document status not updated", data: data })
+                    }
+                })
+        
+       
+    }
+    catch (err) {
+        res.json({ message: "Server Error" });
     }
 
 };
