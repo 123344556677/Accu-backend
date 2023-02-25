@@ -57,7 +57,14 @@ const reg = new mongoose.Schema({
     },
     iban:{
         type:String,
+    },
+    country: {
+        type: String,
+    },
+    profilePic:{
+        type: String,
     }
+    
 })
 
 const registeringUser = mongoose.model('user', reg)
