@@ -5,11 +5,15 @@ const trip = new mongoose.Schema({
         type: String,
 
     },
+    companyName: {
+        type: String,
+
+    },
     tripName: {
         type: String,
         
     },
-    client: {
+    clientName: {
         type: String,
         
     },
@@ -80,6 +84,10 @@ const trip = new mongoose.Schema({
         required: true
     },
     documentStatus:{
+        type: String,
+        required: true
+    },
+    documentClientStatus: {
         type: String,
         required: true
     },

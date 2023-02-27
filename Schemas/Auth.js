@@ -63,7 +63,16 @@ const reg = new mongoose.Schema({
     },
     profilePic:{
         type: String,
-    }
+    },
+    comapnyAdress: {
+        type: String,
+    },
+    companyName:{
+        type: String,
+    },
+    VatNumber:{
+        type: String,
+    },
     
 })
 

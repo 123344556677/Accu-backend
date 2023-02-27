@@ -7,22 +7,32 @@ export const createTrip = async (req, res) => {
     try {
 
         console.log(req.body);
-        const { tripName, client, fee,
+        const { tripName,  fee,client,
             percentage, description, destinationTo, destinationFrom,
             startDate, endDate, aircraftType,
              selectAircraft, hotelType, airlineTravel, clientId} = req.body;
+
+             registeringUser.findOne({_id:clientId ? clientId : client},(err,data)=>{
+         if(data){
+             const trip = new registeringTrip({
+                 tripName, clientName:data.firstName, fee, companyName:data.companyName,
+                 percentage, description, destinationTo, destinationFrom,
+                 startDate, endDate, aircraftType, selectAircraft, hotelType, airlineTravel, clientId,
+                 role: "trip", status: "pending", crewStatus: "pending", payment: "pending", documentStatus: "pending", documentClientStatus: "pending", date: Date.now()
+             });
+             trip.save();
+
+             res.json({ message: "Trip Details added", data: req.body });
+
+         }
+         else{
+           res.json({ message: "client not found"});  
+         }
+             })
         
 
 
-        const trip = new registeringTrip({
-            tripName, client, fee,
-            percentage, description, destinationTo, destinationFrom,
-            startDate, endDate, aircraftType, selectAircraft, hotelType, airlineTravel ,clientId,
-            role: "trip",status:"pending",crewStatus:"pending",payment:"pending",documentStatus:"pending",date:Date.now()
-        });
-       trip.save();
-
-        res.json({ message: "Trip Details added", data: req.body });
+       
 
 
 
@@ -135,7 +145,7 @@ export const addCrewToTrips = async (req, res) => {
                 crewType: req.body.crewType,
                 crewName: data.firstName
 
-            } }, fee: fee, percentage: percentage },{new:true},(err, data) => {
+            } }, fee: fee, percentage: percentage,documentStatus:"approved" },{new:true},(err, data) => {
             if (data) {
                 console.log(data);
                         res.json({ message: "crew Added", data: data })
@@ -210,6 +220,7 @@ export const addTripWithCrew= async (req, res) => {
     try {
 
         console.log(req.body,"========>with crew");
+        let name,company;
         const { tripName, client, fee,
             percentage, description, destinationTo, destinationFrom,
             startDate, endDate, aircraftType,
@@ -218,16 +229,27 @@ export const addTripWithCrew= async (req, res) => {
              dailyRateClient,
              perDiemsCrew,
             perDiemsClient,crewType} = req.body;
+        registeringUser.findOne({ _id: client }, (err, data) => {
+            if (data) {
+                
+                name=data.firstName;
+                company=data.companyName;
+
+            }
+            else {
+                console.log("client not found");
+            }
+        })
 
         registeringUser.findOne({ _id:crewId }, (err, data) => {
             console.log(req.body);
             if (data) {
                 console.log(data,"==========>crew data")
                 const trip = new registeringTrip({
-                    tripName, client, fee,
-                    percentage, description, destinationTo, destinationFrom,
+                    tripName, clientName:name, fee,
+                    percentage, description, destinationTo, destinationFrom, companyName: company ,
                     startDate, endDate, aircraftType, selectAircraft, hotelType, airlineTravel, clientId,
-                    role: "trip", status: "pending", crewStatus: "pending", payment: "pending", documentStatus: "pending", crewMembers: [
+                    role: "trip", status: "pending", crewStatus: "pending", payment: "pending", documentStatus: "pending",documentClientStatus:"pending", crewMembers: [
                         {
                             crewId: crewId,
                             dailyRateCrew: dailyRateCrew,
@@ -377,4 +399,32 @@ export const updateTripDocumentStatus = async (req, res) => {
     }
 
 };
+export const updateTripClientDocumentStatus = async (req, res) => {
+    try {
+        console.log(req.body, "========>values")
+        const tripId = req.body.tripId;
+
+
+        registeringTrip.findOneAndUpdate({ _id: tripId },
+            { $set: { documentClientStatus: req.body.documentClientStatus } }, { new: true }, (err, data) => {
+                if (data) {
+                    console.log(data);
+                    res.json({ message: "Document Client status updated", data: data })
+
+
+
+                }
+                else {
+                    res.json({ message: "Document Client status not updated", data: data })
+                }
+            })
+
+
+    }
+    catch (err) {
+        res.json({ message: "Server Error" });
+    }
+
+};
+
 
