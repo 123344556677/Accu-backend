@@ -11,10 +11,11 @@ const stripe = new Stripe("sk_test_51MaOSqE6HtvcwmMAEFBEcSwTQIBNvQVzAXJc1cnrFoKI
 export const paymentController =async (req,res) => {
   try{
     console.log(req.body);
-      let {  paymentId,clientId,tripDetails,tripId } = req.body
+      let {  paymentId,clientId,tripDetails,tripId,amount } = req.body
+      let fee=parseInt(amount);
     
       const payment = await stripe.paymentIntents.create({
-          amount:1000,
+          amount:fee*100,
           currency: "USD",
           description: "Accu Sign company",
           payment_method: paymentId,
