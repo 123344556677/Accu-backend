@@ -56,3 +56,26 @@ export const deleteAircraft = async (req, res) => {
         res.json({ message: "Server Error" });
     }
 }
+export const updateAircraft = async (req, res) => {
+    try {
+        console.log(req.body, "--------->aircraft")
+        const id = req.body.id;
+        registeringAircraft.findOneAndUpdate({ _id: id },
+            { $set: req.body },
+            { new: true }, (err, data) => {
+                if (data) {
+
+                    res.json({ message: "aircraft updated" })
+                    console.log(data, "============>new data")
+                }
+                else {
+                    res.json({ message: "airr not exist" });
+                }
+            })
+    }
+    catch (err) {
+        res.json({ message: "Server Error" });
+        console.log(err, "--------->error")
+    }
+
+};

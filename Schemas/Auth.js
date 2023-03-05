@@ -3,9 +3,13 @@ import mongoose from 'mongoose'
 const reg = new mongoose.Schema({
     firstName: {
         type: String,
-        required: true
+        
     },
-    
+    crewType: {
+        type: String,
+
+    },
+   
     email: {
         type: String,
         required: true
@@ -20,7 +24,7 @@ const reg = new mongoose.Schema({
     },
     phoneNumber: {
         type: String,
-        required: true
+       
     },
     adress:{
      type: String,
@@ -68,6 +72,9 @@ const reg = new mongoose.Schema({
         type: String,
     },
     companyName:{
+        type: String,
+    },
+    registrationNumber: {
         type: String,
     },
     VatNumber:{

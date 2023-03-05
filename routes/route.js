@@ -1,6 +1,6 @@
 
 import express from 'express'
-import { createAircraft, deleteAircraft, getAllAircrafts } from '../controllers/aircraftController.js';
+import { createAircraft, deleteAircraft, getAllAircrafts, updateAircraft } from '../controllers/aircraftController.js';
 import { register, login, getAllUsers, updateUser ,getUsersById, forgetPassword,forgetLink, getCrewByKey, getClientByKey, deleteUser } from "../controllers/authController.js";
 import { addBankDetails, getAllDetails } from '../controllers/bankDetails.js';
 import { createClient, deleteClient, getAllClients } from "../controllers/clientController.js";
@@ -43,6 +43,7 @@ router.get('/getAllDetails', getAllDetails);
 router.post('/addAircraftDetails', createAircraft);
 router.get('/getAllAircrafts', getAllAircrafts);
 router.post('/deleteAircraftById', deleteAircraft);
+router.put('/updateAircraft', updateAircraft);
 
 //trips
 router.post('/addTripDetails', createTrip);

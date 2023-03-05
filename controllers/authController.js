@@ -121,22 +121,24 @@ export const forgetPassword = async (req, res) => {
 };
 export const updateUser= async (req, res) => {
     try {
-        console.log(req.body)
+        console.log(req.body,"--------->user")
         const id=req.body.id;
       registeringUser.findOneAndUpdate({ _id: id },
             { $set:req.body },
             { new: true }, (err, data) => {
                 if (data) {
-                    console.log(data)
+                    
                     res.json({ message: "user updated " })
+                    console.log(data,"============>new data")
                 }
                 else {
-                    res.json({ message: "user does not exist" })
+                    res.json({ message: "user does not exist" });
                 }
             })
     }
     catch (err) {
         res.json({ message: "Server Error" });
+        console.log(err,"--------->error")
     }
 
 };
